@@ -1,16 +1,23 @@
 <mat-card>
-    <form (submit)="onSavePost(postForm)" #postForm="ngForm">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <form (submit)="onSavePost()" [formGroup]="form" *ngIf="!isLoading">
         <mat-form-field>
-            <input required matInput name="title" [ngModel]="post?.title" placeholder="Post Title" type="text"
-                #title="ngModel">
-            <mat-error *ngIf="title.invalid">Please enter a post Title</mat-error>
+            <input matInput formControlName="title" placeholder="Post Title" type="text">
+            <mat-error *ngIf="form.get('title').invalid">Please enter a post Title</mat-error>
+
         </mat-form-field>
+        <div>
+            <button mat-stroked-button (click)="filePicker.click()" class=" animated fadeInRight delay-1.1s"
+                color="primary" type="button">Upload Pic</button>
+            <input #filePicker (change) = "onImagePicked($event)" type="file">
+        </div>
         <mat-form-field>
-            <textarea #content="ngModel" matInput required placeholder="Post Content" name="content"
-                [ngModel]="post?.content" rows="4"></textarea>
-            <mat-error *ngIf="content.invalid">Please enter a post Content</mat-error>
+            <textarea matInput placeholder="Post Content" formControlName="content" rows="4"></textarea>
+            <mat-error *ngIf="form.get('content').invalid">Please enter a post Content</mat-error>
         </mat-form-field>
 
-        <button mat-raised-button class="animated bounce" color="primary" type="submit">Save Posts</button>
+        <button mat-raised-button class="animated fadeInLeft delay-.7s" color="primary" type="submit">Save
+            Posts</button>
+
     </form>
 </mat-card>
